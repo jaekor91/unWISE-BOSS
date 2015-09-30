@@ -296,108 +296,108 @@ print c.most_common(100)
 
 
 
+# 9/30/2015
 ######################################################################################################################################################################################################################################################################################################
-NSPECOBS	int16	Number of spectroscopic observations of this source
-FIRSTRELEASE	str	Name of first release this PLATE, MJD, FIBERID, RUN2D was associated with
-RUN2D	str	Spectroscopic 2D reduction (extraction of spectra) name
-RUN1D	str	Spectroscopic 1D reduction (redshift and classification) name
-DESIGNID	int32	Design identification number for plate
-CX	float64	Position of object on J2000 unit sphere
-CY	float64	Position of object on J2000 unit sphere
-CZ	float64	Position of object on J2000 unit sphere
-XFOCAL	float32	Hole position on plate (+X = +RA) in mm
-YFOCAL	float32	Hole position on plate (+Y = +DEC) in mm
-SOURCETYPE	str	String expressing type of source (similar to OBJTYPE in DR8 and earlier)
-TARGETTYPE	str	General type of target ("SCIENCE", "STANDARD" or "SKY")
-PRIMTARGET	int32	Deprecated version of primary (science) target flags (meanings highly overloaded)
-SECTARGET	int32	Deprecated version of secondary (calibration) target flags (meanings highly overloaded)
-LEGACY_TARGET1	int32	Primary (science) target flags for SDSS-I and SDSS-II Legacy survey
-LEGACY_TARGET2	int32	Secondary (calibration) target flags for SDSS-I and SDSS-II Legacy survey
-SPECIAL_TARGET1	int32	Primary (science) target flags for SDSS-I and SDSS-II special program targets
-SPECIAL_TARGET2	int32	Secondary (calibration) target flags for SDSS-I and SDSS-II special program targets
-SEGUE1_TARGET1	int32	Primary (science) target flags for SEGUE-1 targets
-SEGUE2_TARGET1	int32	Primary (science) target flags for SEGUE-2 targets
-SEGUE2_TARGET2	int32	Secondary (calibration) target flags for SEGUE-2 targets
-MARVELS_TARGET1	int32	Primary (science) target flags for MARVELS targets
-MARVELS_TARGET2	int32	Secondary (calibration) target flags for MARVELS targets
-BOSS_TARGET1	int64	Primary (science) target flags for BOSS targets
-BOSS_TARGET2	int64	Always set to zero (placeholder for BOSS target flags never used)
-ANCILLARY_TARGET1	int64	Target flags for BOSS ancillary targets
-ANCILLARY_TARGET2	int64	More target flags for BOSS ancillary targets
-SPECTROGRAPHID	int16	Which spectrograph (1 or 2)
-PLATE	int32	Plate number (each plate corresponds to an actual plug plate)
-TILE	int32	Tile number (each tile can have several plates drilled for it)
-MJD	int32	Modified Julian Day of observation
-FIBERID	int32	Fiber number
-OBJID	int32[5]	SDSS photometric object identification numbers (RUN, RERUN, CAMCOL, FIELD, ID)
-PLUG_RA	float64	Right ascension of hole (J2000 deg)
-PLUG_DEC	float64	Declination of hole (J2000 deg)
-CLASS	str	Best spectroscopic classification ("STAR", "GALAXY" or "QSO")
-SUBCLASS	str	Best spectroscopic subclassification
-Z	float32	Best redshift
-Z_ERR	float32	Error in best redshift
-RCHI2	float32	Reduced chi-squared of best fit
-DOF	int32	Number of degrees of freedom in best fit
-RCHI2DIFF	float32	Difference in reduced chi-squared between best and second best fit
-TFILE	str	File that best fit template comes from in idlspec2d product
-TCOLUMN	float32[10]	Columns of template files that correspond to each template
-NPOLY	int32	Number of polynomial terms in fit
-THETA	float32[10]	Template coefficients of best fit
-VDISP	float32	Velocity dispersion (km/s)
-VDISP_ERR	float32	Error in velocity dispersion (km/s)
-VDISPZ	float32	Redshift associated with best-fit velocity dispersion
-VDISPZ_ERR	float32	Error in redshift associated with best-fit velocity dispersion
-VDISP_DOF	int32	Number of degrees of freedom in velocity dispersion fit
-VDISPCHI2	float32	Chi-squared for best-fit velocity dispersion
-VDISPNPIX	int32	Number of pixels overlapping the templates used in the velocity dispersion fit
-WAVEMIN	float32	Minimum observed (vacuum) wavelength (Angstroms)
-WAVEMAX	float32	Maximum observed (vacuum) wavelength (Angstroms)
-WCOVERAGE	float32	Coverage in wavelength, in units of log10 wavelength
-ZWARNING	int32	Bitmask of spectroscopic warning values; 0 means everything is OK
-SN_MEDIAN_ALL	float32	Median signal-to-noise per pixel across full spectrum
-SN_MEDIAN	float32[5]	Median signal-to-noise per pixel within each of the ugriz bandpasses
-CHI68P	float32	68-th percentile value of abs(chi) of the best-fit synthetic spectrum to the actual spectrum (around 1.0 for a good fit)
-FRACNSIGMA	float32[10]	Fraction of pixels deviant by more than N sigma relative to best-fit (for 1,2,..,10 sigma)
-FRACNSIGHI	float32	Fraction of pixels high by more than N sigma relative to best-fit (for 1,2,..,10 sigma)
-FRACNSIGLO	float32	Fraction of pixels low by more than N sigma relative to best-fit (for 1,2,..,10 sigma)
-SPECTROFLUX	float32[5]	Spectrum projected onto ugriz filters (nanomaggies)
-SPECTROFLUX_IVAR	float32[5]	Inverse variance of spectrum projected onto ugriz filters (nanomaggies)
-SPECTROSYNFLUX	float32[5]	Best-fit template spectrum projected onto ugriz filters (nanomaggies)
-SPECTROSYNFLUX_IVAR	float32[5]	Inverse variance of best-fit template spectrum projected onto ugriz filters (nanomaggies)
-SPECTROSKYFLUX	float32[5]	Sky flux in each of the ugriz imaging filters (nanomaggies)
-ANYANDMASK	int32	For each bit, records whether any pixel in the spectrum has that bit set in its ANDMASK
-ANYORMASK	int32	For each bit, records whether any pixel in the spectrum has that bit set in its ORMASK
-SPEC1_G	float32	Signal-to-noise squared for spectrograph #1, at g=20.20 for SDSS spectrograph spectra, g=21.20 for BOSS spectrograph spectra
-SPEC1_R	float32	Signal-to-noise squared for spectrograph #1, at r=20.25 for SDSS spectrograph spectra, r=20.20 for BOSS spectrograph spectra
-SPEC1_I	float32	Signal-to-noise squared for spectrograph #1, at i=19.90 for SDSS spectrograph spectra, i=20.20 for BOSS spectrograph spectra
-SPEC2_G	float32	Signal-to-noise squared for spectrograph #2, at g=20.20 for SDSS spectrograph spectra, g=21.20 for BOSS spectrograph spectra
-SPEC2_R	float32	Signal-to-noise squared for spectrograph #2, at r=20.25 for SDSS spectrograph spectra, r=20.20 for BOSS spectrograph spectra
-SPEC2_I	float32	Signal-to-noise squared for spectrograph #2, at i=19.90 for SDSS spectrograph spectra, i=20.20 for BOSS spectrograph spectra
-ELODIE_FILENAME	str	File name for best-fit ELODIE star
-ELODIE_OBJECT	str	Star name for ELODIE star
-ELODIE_SPTYPE	str	ELODIE star spectral type
-ELODIE_BV	float32	(B-V) color index for ELODIE star (mag)
-ELODIE_TEFF	float32	Effective temperature of ELODIE star (Kelvin)
-ELODIE_LOGG	float32	log10(gravity) of ELODIE star
-ELODIE_FEH	float32	Metallicity [Fe/H] of ELODIE star
-ELODIE_Z	float32	Redshift fit to ELODIE star
-ELODIE_Z_ERR	float32	Error in redshift fit to ELODIE star
-ELODIE_Z_MODELERR	float32	Standard deviation in redshift among the 12 best-fit ELODIE stars
-ELODIE_RCHI2	float32	Reduced chi-squared of fit to best ELODIE star
-ELODIE_DOF	int32	Degrees of freedom in fit to best ELODIE star
-Z_NOQSO	float32	Best redshift when ignoring QSO fits, recommended for BOSS CMASS and LOWZ targets; calculated only for survey='boss' spectra, not for any SDSS spectrograph data
-Z_ERR_NOQSO	float32	Error in Z_NOQSO redshift
-ZWARNING_NOQSO	int32	For Z_NOQSO redshift, the bitmask of spectroscopic warning values; 0 means everything is OK
-CLASS_NOQSO	str	Spectroscopic classification for Z_NOQSO redshift
-SUBCLASS_NOQSO	str	Spectroscopic subclassification for Z_NOQSO redshift
-RCHI2DIFF_NOQSO	float32	Difference in reduced chi-squared between best and second best fit for Z_NOQSO redshift
-Z_PERSON	float32	Visual-inspection redshift
-CLASS_PERSON	int32	Visual-inspection classification (0=not inspected or unknown, 1=star, 2=narrow emission-line galaxy, 3=QSO, 4=galaxy)
-Z_CONF_PERSON	int32	Visual-inspection confidence (0=not inspected or no confidence, 1,2=low confidence, 3,4=high confidence)
-COMMENTS_PERSON	str	Visual-inspection comments
-CALIBFLUX	float32[5]	ugriz fluxes used for calibrations (nanomaggies)
-CALIBFLUX_IVAR	float32[5]	Inverse variances of ugriz fluxes used for calibrations (nanomaggies)
+### NSPECOBS	int16	Number of spectroscopic observations of this source
+objs[1]['nspecobs'][0:50]
+min(objs[1]['nspecobs'][:])
+max(objs[1]['nspecobs'][:])
+plt.hist(objs[1]['nspecobs'][:], bins=np.arange(0, 14, 0.5))
+plt.show()
+# Most objects have 1 or 2 spectra.
 
+
+### FIRSTRELEASE	str	Name of first release this PLATE, MJD, FIBERID, RUN2D was associated with
+### RUN2D	str	Spectroscopic 2D reduction (extraction of spectra) name
+### RUN1D	str	Spectroscopic 1D reduction (redshift and classification) name
+### DESIGNID	int32	Design identification number for plate
+### CX	float64	Position of object on J2000 unit sphere
+### CY	float64	Position of object on J2000 unit sphere
+### CZ	float64	Position of object on J2000 unit sphere
+### XFOCAL	float32	Hole position on plate (+X = +RA) in mm
+### YFOCAL	float32	Hole position on plate (+Y = +DEC) in mm
+
+
+### SOURCETYPE	str	String expressing type of source (similar to OBJTYPE in DR8 and earlier)
+objs[1]['sourcetype'][0:50]
+from collections import Counter
+counts = Counter(objs[1]['sourcetype'][:])
+
+import operator
+sorted_counts = sorted(counts.items(), key=operator.itemgetter(1)) #0 is sorted by name and 1 is sorted by # of occurences. 
+xlabels = []
+yvals = []
+for y in range(len(sorted_counts)):
+    if sorted_counts[y][1] > 10000:
+        yvals.append(sorted_counts[y][1])    
+        xlabels.append(sorted_counts[y][0]) 
+
+X = np.arange(len(yvals))
+pl.bar(X, yvals, align='center', width=0.5)
+pl.xticks(X, xlabels)
+ymax = max(yvals) + 1
+pl.ylim(0, ymax)
+pl.show()
+
+
+### TARGETTYPE	str	General type of target ("SCIENCE", "STANDARD" or "SKY")
+objs[1]['TARGETTYPE'][0:50]
+from collections import Counter
+counts = Counter(objs[1]['TARGETTYPE'][:])
+
+import operator
+sorted_counts = sorted(counts.items(), key=operator.itemgetter(1)) #0 is sorted by name and 1 is sorted by # of occurences. 
+xlabels = []
+yvals = []
+for y in range(len(sorted_counts)):
+    if sorted_counts[y][1] > 10000:
+        yvals.append(sorted_counts[y][1])    
+        xlabels.append(sorted_counts[y][0]) 
+
+X = np.arange(len(yvals))
+pl.bar(X, yvals, align='center', width=0.5)
+pl.xticks(X, xlabels)
+ymax = max(yvals) + 1
+pl.ylim(0, ymax)
+pl.show()
+
+
+### PRIMTARGET	int32	Deprecated version of primary (science) target flags (meanings highly overloaded)
+### SECTARGET	int32	Deprecated version of secondary (calibration) target flags (meanings highly overloaded)
+### LEGACY_TARGET1	int32	Primary (science) target flags for SDSS-I and SDSS-II Legacy survey
+### LEGACY_TARGET2	int32	Secondary (calibration) target flags for SDSS-I and SDSS-II Legacy survey
+### SPECIAL_TARGET1	int32	Primary (science) target flags for SDSS-I and SDSS-II special program targets
+### SPECIAL_TARGET2	int32	Secondary (calibration) target flags for SDSS-I and SDSS-II special program targets
+### SEGUE1_TARGET1	int32	Primary (science) target flags for SEGUE-1 targets
+### SEGUE2_TARGET1	int32	Primary (science) target flags for SEGUE-2 targets
+### SEGUE2_TARGET2	int32	Secondary (calibration) target flags for SEGUE-2 targets
+### MARVELS_TARGET1	int32	Primary (science) target flags for MARVELS targets
+### MARVELS_TARGET2	int32	Secondary (calibration) target flags for MARVELS targets
+### BOSS_TARGET1	int64	Primary (science) target flags for BOSS targets
+objs[1]['BOSS_TARGET1'][0:50]
+min(objs[1]['BOSS_TARGET1'][:])
+max(objs[1]['BOSS_TARGET1'][:])
+plt.hist(objs[1]['BOSS_TARGET1'][:], bins=np.arange(0, 2**15, 2**12))
+plt.show()
+# I am not sure what these flags mean.
+
+#BOSS_TARGET2	int64	Always set to zero (placeholder for BOSS target flags never used)
+### ANCILLARY_TARGET1	int64	Target flags for BOSS ancillary targets
+### ANCILLARY_TARGET2	int64	More target flags for BOSS ancillary targets
+### SPECTROGRAPHID	int16	Which spectrograph (1 or 2)
+### PLATE	int32	Plate number (each plate corresponds to an actual plug plate)
+### TILE	int32	Tile number (each tile can have several plates drilled for it)
+### MJD	int32	Modified Julian Day of observation
+### FIBERID	int32	Fiber number
+
+
+
+### OBJID	int32[5]	SDSS photometric object identification numbers (RUN, RERUN, CAMCOL, FIELD, ID)
+objs[1]['OBJID'][0:50]
+
+
+### PLUG_RA	float64	Right ascension of hole (J2000 deg)
+### PLUG_DEC	float64	Declination of hole (J2000 deg)
 #RA/DEC 
 RA = objs[1]['plug_ra'][:]
 DEC = objs[1]['plug_dec'][:]
@@ -411,8 +411,27 @@ plt.axis('equal')
 plt.show()
 
 
-# Incorrect plate
-list(objs[1]['platequality'][:]).count('bad') #According to the answer, looks like everything seems fine.
+
+### CLASS	str	Best spectroscopic classification ("STAR", "GALAXY" or "QSO")
+from collections import Counter
+counts = Counter(objs[1]['CLASS'][:])
+
+import operator
+sorted_counts = sorted(counts.items(), key=operator.itemgetter(1)) #0 is sorted by name and 1 is sorted by # of occurences. 
+xlabels = []
+yvals = []
+for y in range(len(sorted_counts)):
+    if sorted_counts[y][1] > 10000:
+        yvals.append(sorted_counts[y][1])    
+        xlabels.append(sorted_counts[y][0]) 
+
+X = np.arange(len(yvals))
+pl.bar(X, yvals, align='center', width=0.5)
+pl.xticks(X, xlabels)
+ymax = max(yvals) + 1
+pl.ylim(0, ymax)
+pl.show()
+
 
 #Classes in the catalog
 objs[1]['class'][0:50] #To see examples. 
@@ -431,11 +450,132 @@ plt.axis('equal')
 plt.show()
 #Conclusion: It appears that stars, galaxies, and QSOs cover about the same region.
 
+
+
+
+### SUBCLASS	str	Best spectroscopic subclassification
+from collections import Counter
+counts = Counter(objs[1]['subclass'][:])
+import operator
+sorted_counts = sorted(counts.items(), key=operator.itemgetter(1)) #0 is sorted by name and 1 is sorted by # of occurences. 
+xlabels = []
+yvals = []
+for y in range(len(sorted_counts)):
+    if sorted_counts[y][1] > 10000:
+        yvals.append(sorted_counts[y][1])    
+        xlabels.append(sorted_counts[y][0]) 
+
+X = np.arange(len(yvals))
+pl.bar(X, yvals, align='center', width=0.5)
+pl.xticks(X, xlabels)
+ymax = max(yvals) + 1
+pl.ylim(0, ymax)
+pl.show()
+
+
+
+### Z	float32	Best redshift
 #Different objects and their redshift distributions. 
+objs[1]['z'][0:50]
+min(objs[1]['z'][:])
+max(objs[1]['z'][:])
+plt.hist(objs[1]['z'][:], bins=np.arange(-0.5, 7.5, 0.1))
+plt.show()
+
+# Different objects and their color distribution. 
+# Options: Class ("STAR", "GALAXY" or "QSO"), targettype ("SCIENCE", "STANDARD" or "SKY")
+objs[1]['targettype'][0:50]
+objs[1]['class'][0:50]
+
+# ibool = (objs[1]['class'][:]=='STAR  ') #Centered around 0. Cuspy distribution.
+# ibool = (objs[1]['class'][:]=="QSO   ")  # Pretty widely distributed from 0.002 to 7.02.
+# ibool = (objs[1]['class'][:]=="GALAXY")
+# ibool = (objs[1]['targettype'][:]=="SCIENCE ")
+# ibool = (objs[1]['targettype'][:]=="SKY     ")
+# ibool = (objs[1]['targettype'][:]=="STANDARD")
+# ibool = (objs[1]['class'][:]=='STAR  ') & (objs[1]['ZWARNING'][:] ==0)
+# ibool = (objs[1]['class'][:]=="QSO   ") & (objs[1]['ZWARNING'][:] ==0)
+# ibool = (objs[1]['class'][:]=="GALAXY") & (objs[1]['ZWARNING'][:] ==0) 
+# ibool = (objs[1]['targettype'][:]=="SCIENCE ") & (objs[1]['ZWARNING'][:] ==0)
+ibool = (objs[1]['targettype'][:]=="SKY     ") & (objs[1]['ZWARNING'][:] ==0) # No objects. zwarning pretty much eliminates them all.
+# ibool = (objs[1]['targettype'][:]=="STANDARD")
+((objs[1]['z'][:])[ibool])[0:50]
+min((objs[1]['z'][:])[ibool])
+max((objs[1]['z'][:])[ibool])
+plt.hist((objs[1]['z'][:])[ibool], bins=np.arange(min((objs[1]['z'][:])[ibool])-0.1, max((objs[1]['z'][:])[ibool])+0.1, 0.01))
+plt.savefig('z-TARGETTYPE-SCIENCE-ZWARNING.eps', bbox_inches='tight')
+plt.show()
 
 
-#Different objects and their color distribution. 
+### Z_ERR	float32	Error in best redshift
 
 
 
-objs[1]['subclass'][0:50] #To see examples. 
+### RCHI2	float32	Reduced chi-squared of best fit
+### DOF	int32	Number of degrees of freedom in best fit
+### RCHI2DIFF	float32	Difference in reduced chi-squared between best and second best fit
+### TFILE	str	File that best fit template comes from in idlspec2d product
+### TCOLUMN	float32[10]	Columns of template files that correspond to each template
+### NPOLY	int32	Number of polynomial terms in fit
+### THETA	float32[10]	Template coefficients of best fit
+### VDISP	float32	Velocity dispersion (km/s)
+# VDISP_ERR	float32	Error in velocity dispersion (km/s)
+# VDISPZ	float32	Redshift associated with best-fit velocity dispersion
+# VDISPZ_ERR	float32	Error in redshift associated with best-fit velocity dispersion
+# VDISP_DOF	int32	Number of degrees of freedom in velocity dispersion fit
+# VDISPCHI2	float32	Chi-squared for best-fit velocity dispersion
+# VDISPNPIX	int32	Number of pixels overlapping the templates used in the velocity dispersion fit
+
+
+
+### WAVEMIN	float32	Minimum observed (vacuum) wavelength (Angstroms)
+### WAVEMAX	float32	Maximum observed (vacuum) wavelength (Angstroms)
+
+
+
+
+# WCOVERAGE	float32	Coverage in wavelength, in units of log10 wavelength
+ZWARNING	int32	Bitmask of spectroscopic warning values; 0 means everything is OK
+SN_MEDIAN_ALL	float32	Median signal-to-noise per pixel across full spectrum
+SN_MEDIAN	float32[5]	Median signal-to-noise per pixel within each of the ugriz bandpasses
+# CHI68P	float32	68-th percentile value of abs(chi) of the best-fit synthetic spectrum to the actual spectrum (around 1.0 for a good fit)
+# FRACNSIGMA	float32[10]	Fraction of pixels deviant by more than N sigma relative to best-fit (for 1,2,..,10 sigma)
+# FRACNSIGHI	float32	Fraction of pixels high by more than N sigma relative to best-fit (for 1,2,..,10 sigma)
+# FRACNSIGLO	float32	Fraction of pixels low by more than N sigma relative to best-fit (for 1,2,..,10 sigma)
+# SPECTROFLUX	float32[5]	Spectrum projected onto ugriz filters (nanomaggies)
+SPECTROFLUX_IVAR	float32[5]	Inverse variance of spectrum projected onto ugriz filters (nanomaggies)
+SPECTROSYNFLUX	float32[5]	Best-fit template spectrum projected onto ugriz filters (nanomaggies)
+SPECTROSYNFLUX_IVAR	float32[5]	Inverse variance of best-fit template spectrum projected onto ugriz filters (nanomaggies)
+SPECTROSKYFLUX	float32[5]	Sky flux in each of the ugriz imaging filters (nanomaggies)
+ANYANDMASK	int32	For each bit, records whether any pixel in the spectrum has that bit set in its ANDMASK
+ANYORMASK	int32	For each bit, records whether any pixel in the spectrum has that bit set in its ORMASK
+# SPEC1_G	float32	Signal-to-noise squared for spectrograph #1, at g=20.20 for SDSS spectrograph spectra, g=21.20 for BOSS spectrograph spectra
+# SPEC1_R	float32	Signal-to-noise squared for spectrograph #1, at r=20.25 for SDSS spectrograph spectra, r=20.20 for BOSS spectrograph spectra
+# SPEC1_I	float32	Signal-to-noise squared for spectrograph #1, at i=19.90 for SDSS spectrograph spectra, i=20.20 for BOSS spectrograph spectra
+# SPEC2_G	float32	Signal-to-noise squared for spectrograph #2, at g=20.20 for SDSS spectrograph spectra, g=21.20 for BOSS spectrograph spectra
+# SPEC2_R	float32	Signal-to-noise squared for spectrograph #2, at r=20.25 for SDSS spectrograph spectra, r=20.20 for BOSS spectrograph spectra
+# SPEC2_I	float32	Signal-to-noise squared for spectrograph #2, at i=19.90 for SDSS spectrograph spectra, i=20.20 for BOSS spectrograph spectra
+# ELODIE_FILENAME	str	File name for best-fit ELODIE star
+# ELODIE_OBJECT	str	Star name for ELODIE star
+# ELODIE_SPTYPE	str	ELODIE star spectral type
+# ELODIE_BV	float32	(B-V) color index for ELODIE star (mag)
+# ELODIE_TEFF	float32	Effective temperature of ELODIE star (Kelvin)
+# ELODIE_LOGG	float32	log10(gravity) of ELODIE star
+# ELODIE_FEH	float32	Metallicity [Fe/H] of ELODIE star
+# ELODIE_Z	float32	Redshift fit to ELODIE star
+# # ELODIE_Z_ERR	float32	Error in redshift fit to ELODIE star
+# ELODIE_Z_MODELERR	float32	Standard deviation in redshift among the 12 best-fit ELODIE stars
+# ELODIE_RCHI2	float32	Reduced chi-squared of fit to best ELODIE star
+# ELODIE_DOF	int32	Degrees of freedom in fit to best ELODIE star
+# Z_NOQSO	float32	Best redshift when ignoring QSO fits, recommended for BOSS CMASS and LOWZ targets; calculated only for survey='boss' spectra, not for any SDSS spectrograph data
+# Z_ERR_NOQSO	float32	Error in Z_NOQSO redshift
+# ZWARNING_NOQSO	int32	For Z_NOQSO redshift, the bitmask of spectroscopic warning values; 0 means everything is OK
+# CLASS_NOQSO	str	Spectroscopic classification for Z_NOQSO redshift
+# SUBCLASS_NOQSO	str	Spectroscopic subclassification for Z_NOQSO redshift
+# RCHI2DIFF_NOQSO	float32	Difference in reduced chi-squared between best and second best fit for Z_NOQSO redshift
+# Z_PERSON	float32	Visual-inspection redshift
+# CLASS_PERSON	int32	Visual-inspection classification (0=not inspected or unknown, 1=star, 2=narrow emission-line galaxy, 3=QSO, 4=galaxy)
+# Z_CONF_PERSON	int32	Visual-inspection confidence (0=not inspected or no confidence, 1,2=low confidence, 3,4=high confidence)
+# COMMENTS_PERSON	str	Visual-inspection comments
+# CALIBFLUX	float32[5]	ugriz fluxes used for calibrations (nanomaggies)
+# CALIBFLUX_IVAR	float32[5]	Inverse variances of ugriz fluxes used for calibrations (nanomaggies)
