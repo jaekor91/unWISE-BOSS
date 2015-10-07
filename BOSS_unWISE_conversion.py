@@ -16,7 +16,7 @@ def unWISE2BOSS(tilename, channelNumber, BOSSra, BOSSdec, plot=True):
 	tileName = tilename
 	channel = channelNumber
 	# Contructing file address
-	fileaddress = '/project/projectdirs/cosmo/data/unwise/unwise-coadds/'+tileName[0:3]+'/'+tileName+'/unwise-'+tileName+'-'+channel+'-img-m.fits'
+	fileaddress = get_unwise_filename(tileName, channel)
 
 	# Getting the RA/DEC bounds corresponding to the tile.
 	wcs = Tan(fileaddress)
@@ -47,6 +47,10 @@ def unWISE2BOSS(tilename, channelNumber, BOSSra, BOSSdec, plot=True):
 	return x, y
 
 
+def get_unwise_filename(tileName, channel):
+	return '/project/projectdirs/cosmo/data/unwise/unwise-coadds/'+tileName[0:3]+'/'+tileName+'/unwise-'+tileName+'-'+channel+'-img-m.fits'
+
+
 # Already available variables: BOSS RA/DEC. 
 # Input: a BOSS galaxy RA/DEC and tileID, tileDEC, tileRA
 # Output: The name of the tiles that contain the object. Note that there could be multiple tiles.
@@ -56,7 +60,7 @@ def unWISE2BOSS(tilename, channelNumber, BOSSra, BOSSdec, plot=True):
 # blockID=objs2[1]['coadd_id'][:] 
 # blockRA = objs2[1]['ra'][:] 
 # blockDEC= objs2[1]['dec'][:] 
-# BOSS2unWISE(150, 190, blockID, blockRA, blockDEC)
+# BOSS2unWISE(150.0, 19.0, blockID, blockRA, blockDEC)
 # 
 
 def BOSS2unWISE(RA, DEC, tileID, tileRA, tileDEC, plot=True):
@@ -67,7 +71,7 @@ def BOSS2unWISE(RA, DEC, tileID, tileRA, tileDEC, plot=True):
 	for x in tilesCandidates:
 		channel = 'w1'
 		tileName = x
-		fileaddress = '/project/projectdirs/cosmo/data/unwise/unwise-coadds/'+tileName[0:3]+'/'+tileName+'/unwise-'+tileName+'-'+channel+'-img-m.fits'
+		fileaddress = get_unwise_filename(x, channel)
 		wcs = Tan(fileaddress)
 		xbound = np.array([0,2047])
 		ybound = np.array([0, 2047])
@@ -81,9 +85,9 @@ def BOSS2unWISE(RA, DEC, tileID, tileRA, tileDEC, plot=True):
 
 
 
-# ###################################################################################### 
-# # This portion of the code is used when developing the code.
-# # Loading BOSS RA/DEC here
+###################################################################################### 
+# This portion of the code is used when developing the code.
+# Loading BOSS RA/DEC here
 # import fitsio
 # import numpy as np
 # import matplotlib.pyplot as plt
