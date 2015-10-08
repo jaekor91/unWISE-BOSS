@@ -38,8 +38,8 @@ def unWISE2BOSS(tilename, channelNumber, BOSSra, BOSSdec, plot=True):
 	#From the result, I choose to use 1504p196
 	if plot:
 		objs1 = fitsio.FITS(fileaddress)
-		blockImage =objs1[0][:,:]
-		plt.imshow(blockImage, cmap='gray', vmin=-50, vmax=300, origin='lower')
+		blockImage =objs1[0][:,:] 
+		plt.imshow(blockImage, cmap='gray', vmin=-50, vmax=300, origin='lower') # 10/8/2015: Becareful about the orientation of the matrix. 
 		plt.scatter(x, y, facecolors='none', edgecolors='r',s=100)
 		plt.show()
 
@@ -65,8 +65,9 @@ def get_unwise_filename(tileName, channel):
 
 def BOSS2unWISE(RA, DEC, tileID, tileRA, tileDEC, plot=True):
 	tol = 1.56
-	iBool = (blockRA>(RA-tol))&(blockRA<(RA+tol))&(blockDEC>(DEC-tol))&(blockDEC<(DEC+tol))
-	tilesCandidates = blockID[iBool]
+	angdist = np.arccos(np.sin(tileDEC)*np.sin(DEC)+np.cos(tileDEC)*np.cos(DEC)*np.cos(tileRA-RA))
+	iBool = angdist < tol
+	tilesCandidates = tileID[iBool]
 	tiles = []
 	for x in tilesCandidates:
 		channel = 'w1'
