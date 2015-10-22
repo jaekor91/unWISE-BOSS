@@ -26,8 +26,8 @@ def unWISE_BOSS_cutouts(tilename, channelNumber, BOSSra, BOSSdec, pixSize):
 	cutoutY = y[iBool]
 	# I think the indices are correct here.
 	
-	intX = cutoutX.around()
-	intY = cutoutY.around()
+	intX = np.around(cutoutX)
+	intY = np.around(cutoutY)
 
 	diffX = cutoutX - intX
 	diffY = cutoutY - intY
