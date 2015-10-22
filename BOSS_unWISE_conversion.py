@@ -21,12 +21,18 @@ def unWISE2BOSS(tilename, channelNumber, BOSSra, BOSSdec, plot=True):
 	# Getting the RA/DEC bounds corresponding to the tile.
 	wcs = Tan(fileaddress)
 	ok, x, y = wcs.radec2pixelxy(RA, DEC)
-	x -= 1
-	y -= 1
 
-	iBool = (0<x) &(x<2047)&(0<y)&(y<2047)
+	a = np.isnan(x)
+	b = np.isnan(y)
+
+	x[a] = 0
+	y[b] = 0
+
+	iBool = (1<x) &(x<2048)&(1<y)&(y<2048)
 	x=x[iBool]
 	y=y[iBool]
+	x -= 1
+	y -= 1	
 
 	#From the result, I choose to use 1504p196
 	if plot:
