@@ -18,9 +18,19 @@ def unWISE2BOSS(tilename, channelNumber, BOSSra, BOSSdec, plot=True):
 	# Contructing file address
 	fileaddress = get_unwise_filename(tileName, channel)
 
-	# Getting the RA/DEC bounds corresponding to the tile.
+	tol = 2.00
+	if 'm' in tileName:
+		ra = float(tileName.split('m')[0])/10.0
+		dec = float(tileName.split('m')[1])/10.0
+	else: 
+		ra = float(tileName.split('p')[0])/10.0
+		dec = float(tileName.split('p')[1])/10.0
+
+	iBool = degrees_between(ra, dec, RA,DEC) <tol
+
+	# Getting x,y positions of the objects near by the center of the tile. 
 	wcs = Tan(fileaddress)
-	ok, x, y = wcs.radec2pixelxy(RA, DEC)
+	ok, x, y = wcs.radec2pixelxy(RA[iBool], DEC[iBool])
 
 	a = np.isnan(x)
 	b = np.isnan(y)
@@ -28,7 +38,7 @@ def unWISE2BOSS(tilename, channelNumber, BOSSra, BOSSdec, plot=True):
 	x[a] = 0
 	y[b] = 0
 
-	iBool = (1<x) &(x<2048)&(1<y)&(y<2048)
+	iBool = (1<x)&(x<2048)&(1<y)&(y<2048)
 	x=x[iBool]
 	y=y[iBool]
 	x -= 1
