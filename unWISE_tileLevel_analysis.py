@@ -26,8 +26,8 @@ def unWISE_BOSS_cutouts(tilename, channelNumber, BOSSra, BOSSdec, pixSize):
 	cutoutY = y[iBool]
 	# I think the indices are correct here.
 	
-	intX = cutoutX.astype(int)
-	intY = cutoutY.astype(int)
+	intX = cutoutX.around()
+	intY = cutoutY.around()
 
 	diffX = cutoutX - intX
 	diffY = cutoutY - intY
@@ -46,7 +46,7 @@ def unWISE_BOSS_cutouts(tilename, channelNumber, BOSSra, BOSSdec, pixSize):
 			addBlock = blockImage[Y-tol:Y+tol,X-tol:X+tol]
 			# print addBlock.shape #For Debugging purpose.
 			imageCube = np.dstack((imageCube, addBlock))
-		imageCube = imageCube[:,:,1:]
+		imageCube = imageCube[:,:,1:] #I am not sure what is the proper way to think about this. I think this is OK because it won't contribute to the sum in anyway.
 
 	return blockImage, imageCube, cutoutX, cutoutY, diffX, diffY, pixSize
 
@@ -90,6 +90,5 @@ def view_unWISE_cutouts(imageCube, iMin=0, iMax=1):
 
 
 
-# 
 
 
