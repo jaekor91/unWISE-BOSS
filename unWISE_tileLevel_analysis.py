@@ -91,4 +91,15 @@ def view_unWISE_cutouts(imageCube, iMin=0, iMax=1):
 
 
 
+def weighted_sum_imageCube(imageCube, weight=0, iMin=0, iMax=1):
+	if weight == 0: #That is, if there is no input for weight, then creates an weight image cube with all 1's. 
+		weight = np.ones(imageCube.shape, dtype=float)
+
+	weightedCube = imageCube*weight
+	summedWeightedCube = np.sum(weightedCube[:,:,iMin:iMax], axis=2)
+	normalization = np.sum(weight[:,:,iMin:iMax], axis=2)
+	normalizedSummedWeightedCube = summedWeightedCube/normalization
+
+	return normalizedSummedWeightedCube
+
 
