@@ -39,11 +39,11 @@ def unWISE_BOSS_cutouts(tilename, channelNumber, BOSSra, BOSSdec, pixSize):
 	objs1 = fitsio.FITS(fileaddress)
 	blockImage =objs1[0][:,:]
 
-	imageCube=np.zeros((2*tol, 2*tol),dtype=float)
+	imageCube=np.zeros((2*tol+1, 2*tol+1),dtype=float)
 	# Cutting out and stacking are done here.
 	if cutoutX.size > 0:
 		for X, Y in zip(intX, intY):
-			addBlock = blockImage[Y-tol:Y+tol,X-tol:X+tol]
+			addBlock = blockImage[Y-tol:Y+tol+1,X-tol:X+tol+1]
 			# print addBlock.shape #For Debugging purpose.
 			imageCube = np.dstack((imageCube, addBlock))
 		imageCube = imageCube[:,:,1:] #I am not sure what is the proper way to think about this. I think this is OK because it won't contribute to the sum in anyway.

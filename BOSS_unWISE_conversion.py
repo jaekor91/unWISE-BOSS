@@ -38,11 +38,14 @@ def unWISE2BOSS(tilename, channelNumber, BOSSra, BOSSdec, plot=True):
 	x[a] = 0
 	y[b] = 0
 
+
 	iBool = (1<x)&(x<2048)&(1<y)&(y<2048)
+	x -= 1
+	y -= 1
+
 	x=x[iBool]
 	y=y[iBool]
-	x -= 1
-	y -= 1	
+
 
 	#From the result, I choose to use 1504p196
 	if plot:
