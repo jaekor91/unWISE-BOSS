@@ -13,7 +13,7 @@ def importBOSSradec():
 	RA = objs[1]['plug_ra'][:]
 	DEC = objs[1]['plug_dec'][:]
 	redZ = objs[1]['Z'][:]
-	iZ = (redZ>0.2)&(redZ<0.7)
+	iZ = (redZ>0.45)&(redZ<0.7)
 	iMASK = (objs[1]['zwarning'][:] == 0) & (objs[1]['class'][:]=="GALAXY") & iZ
 	return RA[iMASK], DEC[iMASK]
 
