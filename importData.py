@@ -7,6 +7,13 @@
 import fitsio
 import numpy as np
 
+def import2MASS():
+	objs = fitsio.FITS('2MASS_Reduced.fits')
+	RA = objs[1]['RA_TMASS'][:]
+	DEC = objs[1]['DEC_TMASS'][:]
+	K_Band = objs[1]['K_TMASS'][:]
+	return RA, DEC, K_Band
+
 
 def importBOSSradec():
 	objs = fitsio.FITS('specObj-BOSS-dr10.fits')
