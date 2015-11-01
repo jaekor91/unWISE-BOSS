@@ -10,8 +10,8 @@ import math
 # Input: tilename, channelNumber, BOSSra, BOSSdec, pixel number on each side
 # Output: Whole image, Image cube, cutout ra and dec pix positions, residuals in pix RA/DEC to be added 
 def unWISE_BOSS_cutouts(tilename, channelNumber, BOSSra, BOSSdec, pixSize):
-	RA = BOSSra.copy()
-	DEC =BOSSdec.copy()
+	RA = BOSSra
+	DEC =BOSSdec
 	tileName = tilename
 	channel = channelNumber
 
@@ -43,10 +43,10 @@ def unWISE_BOSS_cutouts(tilename, channelNumber, BOSSra, BOSSdec, pixSize):
 	# Cutting out and stacking are done here.
 	if cutoutX.size > 0:
 		for X, Y in zip(intX, intY):
-			addBlock = blockImage[Y-tol:Y+tol+1,X-tol:X+tol+1]
+			addBlock = blockImage[Y-tol:Y+tol+1, X-tol:X+tol+1]
 			# print addBlock.shape #For Debugging purpose.
 			imageCube = np.dstack((imageCube, addBlock))
-		imageCube = imageCube[:,:,1:] #I am not sure what is the proper way to think about this. I think this is OK because it won't contribute to the sum in anyway.
+		imageCube = imageCube[:,:,1:] #I am not sure what is the proper way to think about this. I think this is OK because it won't contribute to the sum but there might be a problem with normalization.
 
 	return blockImage, imageCube, cutoutX, cutoutY, diffX, diffY, pixSize
 
