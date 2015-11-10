@@ -51,7 +51,7 @@ def unWISE2BOSS(tilename, channelNumber, BOSSra, BOSSdec, plot=True):
 	if plot:
 		objs1 = fitsio.FITS(fileaddress)
 		blockImage =objs1[0][:,:] 
-		plt.imshow(blockImage, cmap='gray', vmin=-50, vmax=300, origin='lower') # 10/8/2015: Becareful about the orientation of the matrix. 
+		plt.imshow(blockImage, cmap='gray', vmin=-50, vmax=300, origin='lower',interpolation='nearest') # 10/8/2015: Becareful about the orientation of the matrix. 
 		plt.scatter(x, y, facecolors='none', edgecolors='r',s=100)
 		plt.show() 
 
@@ -76,7 +76,7 @@ def get_unwise_filename(tileName, channel):
 # BOSS2unWISE(150.0, 19.0, blockID, blockRA, blockDEC)
 # 
 
-def BOSS2unWISE(ra, dec, tileID, tileRA, tileDEC):
+def BOSS2unWISE(ra, dec, tileID, tileRA, tileDEC,plot=True):
 	tol = 1.56
 	iBool = degrees_between(ra, dec, tileRA,tileDEC) <tol
 	tilesCandidates = tileID[iBool] 
@@ -91,6 +91,12 @@ def BOSS2unWISE(ra, dec, tileID, tileRA, tileDEC):
 		iTile= (0<x) &(x<2047)&(0<y)&(y<2047)
 		if iTile:
 			tiles = np.append(tiles, [tName])
+			if plot:
+				objs1 = fitsio.FITS(fileaddress)
+				blockImage =objs1[0][:,:]
+				plt.imshow(blockImage, cmap='gray', vmin=-50, vmax=300, origin='lower',interpolation='nearest') # 10/8/2015: Becareful about the orientation of the matrix. 
+				plt.scatter(x, y, facecolors='none', edgecolors='r',s=100)
+				plt.show()
 
 	return tiles
 

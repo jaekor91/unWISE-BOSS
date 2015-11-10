@@ -79,7 +79,7 @@ def view_unWISE_cutouts(imageCube, iMin=0, iMax=1):
 	while (iCounter < iMax):
 		print iCounter, plotCounter
 		plt.subplot(numRows, numCol, plotCounter) # numrows, numcols, fignum. (fignum=1, presumably means everything is plotted at the same time.)
-		plt.imshow(imageCube[:,:,iCounter], cmap='gray', vmin=-50, vmax=250, origin='lower')
+		plt.imshow(imageCube[:,:,iCounter], cmap='gray', vmin=-50, vmax=250, interpolation='nearest',origin='lower')
 		plt.scatter(pixSize/2, pixSize/2, facecolors='none', edgecolors='r',s=500)
 		# plt.scatter(pixSize/2+diffX[iCounter], pixSize/2+diffY[iCounter], facecolors='none', edgecolors='r',s=1000)		
 		iCounter = iCounter+1
