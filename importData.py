@@ -33,5 +33,12 @@ def importUNWISEtiles():
 	blockDEC= objs2[1]['dec'][:] 
 	return blockDEC, blockRA, blockID
 
+def importUNWISEtiles_w_MASK():
+	objs2 = fitsio.FITS('allsky-atlas-mask.fits')
+	blockID=objs2[1]['coadd_id'][:] 
+	blockRA = objs2[1]['ra'][:] 
+	blockDEC= objs2[1]['dec'][:]
+	blockMASK = objs2[1]['mask'][:]
+	return blockDEC, blockRA, blockID, blockMASK
 
 
