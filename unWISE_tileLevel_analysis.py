@@ -5,6 +5,13 @@ import fitsio
 import matplotlib.pyplot as plt
 import math
 
+# Input: The name of the tile
+# Output: None. A plot of the tile. 
+def view_tile(tName, channel):
+	objs1 = fitsio.FITS(BOSS_unWISE_conversion.get_unwise_filename(tName, channel))
+	blockImage =objs1[0][:,:]
+	plt.imshow(blockImage, cmap='gray', vmin=-50, vmax=300, origin='lower',interpolation='nearest') # 10/8/2015: Becareful about the orientation of the matrix. 
+	plt.show()
 
 
 # Input: tilename, channelNumber, BOSSra, BOSSdec, pixel number on each side

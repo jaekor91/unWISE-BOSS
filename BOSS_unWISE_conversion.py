@@ -9,7 +9,7 @@ from astrometry.util.starutil_numpy import degrees_between
 # Already available variables: BOSS RA/DEC. 
 # Input: unWISE tile name, channel number
 # Output: BOSS RA/DEC within the til
-def unWISE2BOSS(tilename, channelNumber, BOSSra, BOSSdec, plot=True):
+def unWISE2BOSS(tilename, channelNumber, BOSSra, BOSSdec, plot=True, vmin=-50,vmax=300):
 	# Input tile name
 	RA = BOSSra.copy()
 	DEC =BOSSdec.copy()
@@ -30,7 +30,7 @@ def unWISE2BOSS(tilename, channelNumber, BOSSra, BOSSdec, plot=True):
 
 	# Getting x,y positions of the objects near by the center of the tile. 
 	wcs = Tan(fileaddress)
-	ok, x, y = wcs.radec2pixelxy(RA[iBool], DEC[iBool])
+	ok, x, y = wcs.radec2pixelxy(RA[np.where(iBool==True)], DEC[np.where(iBool==True)])
 
 	a = np.isnan(x)
 	b = np.isnan(y)
@@ -51,7 +51,7 @@ def unWISE2BOSS(tilename, channelNumber, BOSSra, BOSSdec, plot=True):
 	if plot:
 		objs1 = fitsio.FITS(fileaddress)
 		blockImage =objs1[0][:,:] 
-		plt.imshow(blockImage, cmap='gray', vmin=-50, vmax=300, origin='lower',interpolation='nearest') # 10/8/2015: Becareful about the orientation of the matrix. 
+		plt.imshow(blockImage, cmap='gray', vmin=vmin, vmax=vmax, origin='lower',interpolation='nearest') # 10/8/2015: Becareful about the orientation of the matrix. 
 		plt.scatter(x, y, facecolors='none', edgecolors='r',s=100)
 		plt.show() 
 
