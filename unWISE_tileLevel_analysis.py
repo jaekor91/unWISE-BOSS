@@ -123,7 +123,7 @@ def unWISE_mask_map(tileName,channel, tmass_ra, tmass_dec, tmass_k,plot=True, pl
 	fileaddress = BOSS_unWISE_conversion.get_unwise_filename(tileName,channel)
 	objs1 = fitsio.FITS(fileaddress)
 	blockImage =objs1[0][:,:] 
-	rTolerance = np.array([40,35,30,20,15,10,8,5,4,3.5,2,2,2]) # corresponding to m=11 to m=23 (or, [5,6] through [17,18] bins)
+ # corresponding to m=11 to m=23 (or, [5,6] through [17,18] bins)
 	n = 2048 # Size of an unWISE tile.
 # As long as r is less than 100, I can only consider objects within the tile.
 	array = np.ones((n, n))
@@ -135,9 +135,10 @@ def unWISE_mask_map(tileName,channel, tmass_ra, tmass_dec, tmass_k,plot=True, pl
 	else: 
 		ra = float(tileName.split('p')[0])/10.0
 		dec = float(tileName.split('p')[1])/10.0
-
-	for m in range(11, 24):
-		r = rTolerance[m-11]		
+	
+	rTolerance = np.array([1200, 800, 500, 350, 180, 110, 90, 70, 40,35,30,20,15,10,8,5,4,3.5,2,2,2])
+	for m in range(3, 24):
+		r = rTolerance[m-3]	
 		iBool = degrees_between(ra, dec, tmass_ra[inds==m], tmass_dec[inds==m]) <tol
 
 		# Getting x,y positions of the objects near by the center of the tile. 
