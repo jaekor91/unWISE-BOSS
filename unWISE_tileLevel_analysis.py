@@ -4,6 +4,8 @@ import numpy as np
 import fitsio
 import matplotlib.pyplot as plt
 import math
+from astrometry.util.util import Tan
+from astrometry.util.starutil_numpy import degrees_between
 
 # Input: The name of the tile
 # Output: None. A plot of the tile. 
@@ -109,4 +111,79 @@ def weighted_sum_imageCube(imageCube, weight=0, iMin=0, iMax=1):
 
 	return normalizedSummedWeightedCube
 
+
+
+
+# 11/11/2015 Addition
+def unWISE_mask_map(tileName,channel, tmass_ra, tmass_dec, tmass_k,plot=True, plotsave=True, vmin=-50,vmax=300):
+# Input: tileName, channel, and ra,dec,k of tmass objects that are near the tile.
+# Output: mask_map is saved in my directory. Also, shows the masked map, 2 2plots.
+	bins = np.arange(-5,22,1.0)
+	inds = np.digitize(tmass_k, bins)
+	fileaddress = BOSS_unWISE_conversion.get_unwise_filename(tileName,channel)
+	objs1 = fitsio.FITS(fileaddress)
+	blockImage =objs1[0][:,:] 
+	rTolerance = np.array([40,35,30,20,15,10,8,5,4,3.5,2,2,2]) # corresponding to m=11 to m=23 (or, [5,6] through [17,18] bins)
+	n = 2048 # Size of an unWISE tile.
+# As long as r is less than 100, I can only consider objects within the tile.
+	array = np.ones((n, n))
+
+	tol = 2.00 # This is pretty large.
+	if 'm' in tileName:
+		ra = float(tileName.split('m')[0])/10.0
+		dec = float(tileName.split('m')[1])/10.0
+	else: 
+		ra = float(tileName.split('p')[0])/10.0
+		dec = float(tileName.split('p')[1])/10.0
+
+	for m in range(11, 24):
+		r = rTolerance[m-11]		
+		iBool = degrees_between(ra, dec, tmass_ra[inds==m], tmass_dec[inds==m]) <tol
+
+		# Getting x,y positions of the objects near by the center of the tile. 
+		wcs = Tan(fileaddress)
+		ok, x, y = wcs.radec2pixelxy(tmass_ra[inds==m][np.where(iBool==True)], tmass_dec[inds==m][np.where(iBool==True)])
+		# As long as r is less than 100, I can only consider objects within the tile.
+		a = np.isnan(x)
+		b = np.isnan(y)
+
+		x[a] = 0
+		y[b] = 0
+
+		# ibool = (0<x)&(x<500)&(0<y)&(y<500)#
+		ibool = (1<x)&(x<2048)&(1<y)&(y<2048)
+		x -= 1
+		y -= 1
+
+		x=x[ibool]
+		y=y[ibool]
+
+		for (a,b) in zip (y,x):
+			Y,X = np.ogrid[-a:n-a, -b:n-b] # I guess this doesn't really matter.
+			mask = X*X + Y*Y <= r*r
+			array[mask] = 0
+
+		print m,r, x.size #Printing the the bin number, mask radius, the size of x.
+
+	if plot:
+		# Holes filled with the median image. 
+		plt.subplot(1,2, 1)
+		plt.imshow(blockImage, cmap='gray', vmin=vmin, vmax=vmax, origin='lower',interpolation='nearest') # 10/8/2015: Becareful about the orientation of the matrix. 
+
+		plt.subplot(1,2,2)
+		filtered_image = np.copy(blockImage)
+		filtered_image[array==0] = np.median(filtered_image)
+		plt.imshow(filtered_image, cmap='gray', vmin=vmin, vmax=vmax, origin='lower',interpolation='nearest') # 10/8/2015: Becareful about the orientation of the matrix. 
+		plt.savefig(tileName+'_masked_compare.eps', bbox_inches='tight',interpolation='nearest')		
+		plt.show() 
+
+		# Turning up the contrast
+		plt.imshow(filtered_image, cmap='gray', vmin=filtered_image.min(), vmax=np.percentile(filtered_image,99), origin='lower',interpolation='nearest') # 10/8/2015: Becareful about the orientation of the matrix. 
+		plt.savefig(tileName+'_masked.eps', bbox_inches='tight',interpolation='nearest')		
+		plt.show() 
+
+	fits = fitsio.FITS(tileName+'_mask.fits','rw') #This can probably be fixed so that the program is more efficient. Say, save as integer type... I am not sure though.
+	fits.write_image(array)
+	fits.close()
+	return array
 
