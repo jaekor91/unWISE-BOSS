@@ -7,6 +7,28 @@ import math
 from astrometry.util.util import Tan
 from astrometry.util.starutil_numpy import degrees_between
 
+
+# Input: Tile name (Must have an accompanying mask in the directory)
+# Output: Juxtapose the image with the masked image
+def view_tile_mask_compare(tName, channel, vmin=-50,vmax=300):
+	objs1 = fitsio.FITS(BOSS_unWISE_conversion.get_unwise_filename(tName, channel))
+	blockImage =objs1[0][:,:]
+	plt.subplot(1,2, 1)
+	plt.imshow(blockImage, cmap='gray', vmin=vmin, vmax=vmax, origin='lower',interpolation='nearest') # 10/8/2015: Becareful about the orientation of the matrix. 
+
+	objs2 = fitsio.FITS(tName+'_mask.fits')
+	array = objs2[0][:,:]
+	plt.subplot(1,2,2)
+	filtered_image = np.copy(blockImage)
+	filtered_image[array==0] = np.median(filtered_image)
+	plt.imshow(filtered_image, cmap='gray', vmin=vmin, vmax=vmax, origin='lower',interpolation='nearest') # 10/8/2015: Becareful about the orientation of the matrix. 
+	plt.show() 
+
+	# Turning up the contrast
+	plt.imshow(filtered_image, cmap='gray', vmin=filtered_image.min(), vmax=np.percentile(filtered_image,99), origin='lower',interpolation='nearest') # 10/8/2015: Becareful about the orientation of the matrix. 
+	plt.show()
+
+
 # Input: The name of the tile
 # Output: None. A plot of the tile. 
 def view_tile(tName, channel):
@@ -15,6 +37,19 @@ def view_tile(tName, channel):
 	plt.imshow(blockImage, cmap='gray', vmin=-50, vmax=300, origin='lower',interpolation='nearest') # 10/8/2015: Becareful about the orientation of the matrix. 
 	plt.show()
 
+# Given RA/DEC returns x,y,z on the unit sphere.
+def radec2xyz(ra,dec):
+	x = np.cos(ra/180.0*np.pi)*np.cos(dec/180.0*np.pi)
+	y = np.sin(ra/180.0*np.pi)*np.cos(dec/180.0*np.pi) # Spotted an error here.
+	z = np.sin(dec/180.0*np.pi)
+	return x,y,z	
+
+# # Given ra, dec of a tile coordinates and TMASS_X,Y,Z return a boolean array that indicates objects that are nearby.
+def iBoolNearby(ra, dec, TMASS_X, TMASS_Y, TMASS_Z, tol=2.0): 
+	x,y,z = radec2xyz(ra,dec)
+	cosAngle = x*TMASS_X+y*TMASS_Y+z*TMASS_Z
+	iBool = cosAngle>np.cos(tol*np.pi/180.0)
+	return iBool
 
 # Input: tilename, channelNumber, BOSSra, BOSSdec, pixel number on each side
 # Output: Whole image, Image cube, cutout ra and dec pix positions, residuals in pix RA/DEC to be added 
@@ -188,3 +223,15 @@ def unWISE_mask_map(tileName,channel, tmass_ra, tmass_dec, tmass_k,plot=True, pl
 	fits.close()
 	return array
 
+
+
+# # This function is retired as of 11/15/2015. See nearby function above 
+# def tmass_nearby_tile(tileName, TMASS_RA, TMASS_DEC, TMASS_K):
+# 	if 'm' in tileName:
+# 		ra = float(tileName.split('m')[0])/10.0
+# 		dec = float(tileName.split('m')[1])/10.0
+# 	else: 
+# 		ra = float(tileName.split('p')[0])/10.0
+# 		dec = float(tileName.split('p')[1])/10.0
+# 	iBool = (TMASS_RA>(ra-2.0))&(TMASS_RA<(ra+2.0))&(TMASS_DEC>(dec-2.0))&(TMASS_DEC<(dec+2.0))
+# 	return TMASS_RA[iBool], TMASS_DEC[iBool], TMASS_K[iBool]
