@@ -16,7 +16,7 @@ def view_tile_mask_compare(tName, channel, vmin=-50,vmax=300):
 	plt.subplot(1,2, 1)
 	plt.imshow(blockImage, cmap='gray', vmin=vmin, vmax=vmax, origin='lower',interpolation='nearest') # 10/8/2015: Becareful about the orientation of the matrix. 
 
-	objs2 = fitsio.FITS(tName+'_mask.fits')
+	objs2 = fitsio.FITS(get_TMASS_mask_filename(tName))
 	array = objs2[0][:,:]
 	plt.subplot(1,2,2)
 	filtered_image = np.copy(blockImage)
@@ -27,6 +27,11 @@ def view_tile_mask_compare(tName, channel, vmin=-50,vmax=300):
 	# Turning up the contrast
 	plt.imshow(filtered_image, cmap='gray', vmin=filtered_image.min(), vmax=np.percentile(filtered_image,99), origin='lower',interpolation='nearest') # 10/8/2015: Becareful about the orientation of the matrix. 
 	plt.show()
+
+# INput:unWISE tile name
+# Output: the file address for the corresponding mask map based on 2mass
+def get_TMASS_mask_filename(tName):
+	return '/global/homes/j/jaehyeon/unWISE-BOSS/2MASS_masks'+'/'+tName+'_mask.fits'
 
 
 # Input: The name of the tile
