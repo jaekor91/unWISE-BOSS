@@ -205,8 +205,8 @@ def unWISE_mask_map(tileName,channel, TMASS_RA, TMASS_DEC, TMASS_K, TMASS_X, TMA
 			mask = X*X + Y*Y <= r*r
 			array[mask] = False
 
-		print m,r, x.size #Printing the the bin number, mask radius, the size of x.
-
+		print m, '(',bins[m-1],',',bins[m],')', rTolerance[m-3], r, x.size #Printing the the bin number, mask radius, the size of x.
+		
 	if plot:
 		# Holes filled with the median image.
 		objs1 = fitsio.FITS(fileaddress)
