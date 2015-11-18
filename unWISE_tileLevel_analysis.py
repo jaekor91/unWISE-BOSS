@@ -102,7 +102,7 @@ def unWISE_BOSS_cutouts(tilename, channelNumber, BOSSra, BOSSdec, pixSize):
 
 
 
-def view_unWISE_cutouts(imageCube, iMin=0, iMax=1): 
+def view_unWISE_cutouts(imageCube, iMin=0, iMax=1, vminPercentile=0, vmaxPercentile=95): 
 # """Given an image cube, this function will plot cutouts as subplots in the range iMin to iMax."""
 	cubeHeight = imageCube.shape[2]
 	if (iMin > (cubeHeight-1)):
@@ -125,10 +125,12 @@ def view_unWISE_cutouts(imageCube, iMin=0, iMax=1):
 	pixSize = imageCube.shape[0]
 	iCounter=iMin # You exit the while loop before when iCounter reaches iMax
 	plotCounter = 1
+	vmin = np.percentile(imageCube[:,:,:],vminPercentile)
+	vmax = np.percentile(imageCube[:,:,:],vmaxPercentile)
 	while (iCounter < iMax):
 		print iCounter, plotCounter
 		plt.subplot(numRows, numCol, plotCounter) # numrows, numcols, fignum. (fignum=1, presumably means everything is plotted at the same time.)
-		plt.imshow(imageCube[:,:,iCounter], cmap='gray', vmin=-50, vmax=250, interpolation='nearest',origin='lower')
+		plt.imshow(imageCube[:,:,iCounter], cmap='gray', vmin=vmin, vmax=vmax, interpolation='nearest',origin='lower')
 		plt.scatter(pixSize/2, pixSize/2, facecolors='none', edgecolors='r',s=500)
 		# plt.scatter(pixSize/2+diffX[iCounter], pixSize/2+diffY[iCounter], facecolors='none', edgecolors='r',s=1000)		
 		iCounter = iCounter+1
@@ -179,7 +181,7 @@ def unWISE_mask_map(tileName,channel, TMASS_RA, TMASS_DEC, TMASS_K, TMASS_X, TMA
 	n = 2048 # Size of an unWISE tile.
 	array = np.ones((n, n),dtype=bool)
 
-	rTolerance = np.array([1200, 800, 500, 350, 180, 110, 90, 70, 40,35,30,20,15,10,8,5,4,3.5,2,2,2])*1.25 # 11/15/2015: This change was made to make the mask sizes larger.
+	rTolerance = np.array([1000, 800, 500, 350, 180, 110, 90, 70, 40,35,30,20,15,10,8,5,4,3.5,2,2,2])*1.25 # 11/15/2015: This change was made to make the mask sizes larger.
 	for m in range(3, 24):
 		r = rTolerance[m-3]	
 		# iBool = degrees_between(ra, dec, tmass_ra[inds==m], tmass_dec[inds==m]) <tol # Not necessary.
@@ -205,8 +207,8 @@ def unWISE_mask_map(tileName,channel, TMASS_RA, TMASS_DEC, TMASS_K, TMASS_X, TMA
 			mask = X*X + Y*Y <= r*r
 			array[mask] = False
 
-		print m, '(',bins[m-1],',',bins[m],')', rTolerance[m-3], r, x.size #Printing the the bin number, mask radius, the size of x.
-		
+		print m, '(',bins[m-1],',',bins[m],')', r, x.size #Printing the the bin number, mask radius, the size of x.
+
 	if plot:
 		# Holes filled with the median image.
 		objs1 = fitsio.FITS(fileaddress)
@@ -227,8 +229,8 @@ def unWISE_mask_map(tileName,channel, TMASS_RA, TMASS_DEC, TMASS_K, TMASS_X, TMA
 		plt.show() 
 
 	if plotsave:
-		fits = fitsio.FITS(get_TMASS_mask_filename(tileName), 'rw') #
-		data = np.zeros(array.shape, dtype=[('MASK','bool')])
+		fits = fitsio.FITS(get_TMASS_mask_filename(tileName), 'rw', clobber=True) #
+		data = np.zeros(array.shape, dtype=[('MASK','i2')])
 		data['MASK'] = array
 		fits.write(data)
 		fits.close()
