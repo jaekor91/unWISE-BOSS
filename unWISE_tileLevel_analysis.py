@@ -58,7 +58,7 @@ def iBoolNearby(ra, dec, TMASS_X, TMASS_Y, TMASS_Z, tol=2.0):
 
 # Input: tilename, channelNumber, BOSSra, BOSSdec, pixel number on each side
 # Output: Whole image, Image cube, cutout ra and dec pix positions, residuals in pix RA/DEC to be added 
-def unWISE_BOSS_cutouts(tilename, channelNumber, BOSSra, BOSSdec, pixSize):
+def unWISE_BOSS_cutouts(tilename, channelNumber, BOSSra, BOSSdec, pixSize,TMASS_RA, TMASS_DEC, TMASS_K, TMASS_X, TMASS_Y, TMASS_Z,saveCubes=True, maskSave=True):
 	RA = BOSSra
 	DEC =BOSSdec
 	tileName = tilename
@@ -88,7 +88,7 @@ def unWISE_BOSS_cutouts(tilename, channelNumber, BOSSra, BOSSdec, pixSize):
 	objs1 = fitsio.FITS(fileaddress)
 	blockImage =objs1[0][:,:]
 
-	mask = unWISE_mask_map(ID,channel, TMASS_RA, TMASS_DEC, TMASS_K, TMASS_X, TMASS_Y, TMASS_Z,plot=False, plotsave=True) # The mask will be saved separately.
+	mask = unWISE_mask_map(tileName,channel, TMASS_RA, TMASS_DEC, TMASS_K, TMASS_X, TMASS_Y, TMASS_Z,plot=False, plotsave=maskSave) # The mask will be saved separately.
 
 	imageCube=np.zeros((2*tol+1, 2*tol+1),dtype=float)
 	maskCube = np.zeros((2*tol+1, 2*tol+1),dtype=float)
@@ -110,7 +110,7 @@ def unWISE_BOSS_cutouts(tilename, channelNumber, BOSSra, BOSSdec, pixSize):
 		fits.write_image(maskCube)
 		fits.close() 
 
-	return blockImage, imageCube, maskCube, cutoutX, cutoutY, diffX, diffY, pixSize
+	return blockImage, mask, imageCube, maskCube, cutoutX, cutoutY, diffX, diffY, pixSize
 
 
 def get_imageCube_filename(tileName, channel):
