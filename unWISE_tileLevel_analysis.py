@@ -88,17 +88,33 @@ def unWISE_BOSS_cutouts(tilename, channelNumber, BOSSra, BOSSdec, pixSize):
 	objs1 = fitsio.FITS(fileaddress)
 	blockImage =objs1[0][:,:]
 
+	mask = unWISE_mask_map(ID,channel, TMASS_RA, TMASS_DEC, TMASS_K, TMASS_X, TMASS_Y, TMASS_Z,plot=False, plotsave=True) # The mask will be saved separately.
+
 	imageCube=np.zeros((2*tol+1, 2*tol+1),dtype=float)
+	maskCube = np.zeros((2*tol+1, 2*tol+1),dtype=float)
+
 	# Cutting out and stacking are done here.
 	if cutoutX.size > 0:
 		for X, Y in zip(intX, intY):
 			addBlock = blockImage[Y-tol:Y+tol+1, X-tol:X+tol+1]
+			addBlock2 = mask[Y-tol:Y+tol+1, X-tol:X+tol+1]
 			# print addBlock.shape #For Debugging purpose.
 			imageCube = np.dstack((imageCube, addBlock))
+			maskCube = np.dstack((maskCube, addBlock2))
 		imageCube = imageCube[:,:,1:] #I am not sure what is the proper way to think about this. I think this is OK because it won't contribute to the sum but there might be a problem with normalization.
+		maskCube = maskCube[:,:,1:]
 
-	return blockImage, imageCube, cutoutX, cutoutY, diffX, diffY, pixSize
+	if saveCubes:
+		fits = fitsio.FITS(get_imageCube_filename(tileName,channel),'rw')
+		fits.write_image(imageCube)
+		fits.write_image(maskCube)
+		fits.close() 
 
+	return blockImage, imageCube, maskCube, cutoutX, cutoutY, diffX, diffY, pixSize
+
+
+def get_imageCube_filename(tileName, channel):
+	return '/global/homes/j/jaehyeon/unWISE-BOSS/unWISE_imageCubes'+'/'+tileName+'_icubes.fits'
 
 
 
