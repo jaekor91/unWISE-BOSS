@@ -168,7 +168,7 @@ def unWISE_mask_map(tileName,channel, TMASS_RA, TMASS_DEC, TMASS_K, TMASS_X, TMA
 		ra = float(tileName.split('p')[0])/10.0
 		dec = float(tileName.split('p')[1])/10.0
 
-	iBool = iBoolNearby(ra, dec, TMASS_X, TMASS_Y, TMASS_Z, tol=2.0)
+	iBool = iBoolNearby(ra, dec, TMASS_X, TMASS_Y, TMASS_Z, tol=tol)
 	tmass_ra = TMASS_RA[iBool]
 	tmass_dec = TMASS_DEC[iBool]
 	tmass_k = TMASS_K[iBool]
@@ -177,25 +177,23 @@ def unWISE_mask_map(tileName,channel, TMASS_RA, TMASS_DEC, TMASS_K, TMASS_X, TMA
 	inds = np.digitize(tmass_k, bins)	
 
 	n = 2048 # Size of an unWISE tile.
-	array = np.ones((n, n))
+	array = np.ones((n, n),dtype=bool)
 
 	rTolerance = np.array([1200, 800, 500, 350, 180, 110, 90, 70, 40,35,30,20,15,10,8,5,4,3.5,2,2,2])*1.25 # 11/15/2015: This change was made to make the mask sizes larger.
 	for m in range(3, 24):
 		r = rTolerance[m-3]	
-		iBool = degrees_between(ra, dec, tmass_ra[inds==m], tmass_dec[inds==m]) <tol
+		# iBool = degrees_between(ra, dec, tmass_ra[inds==m], tmass_dec[inds==m]) <tol # Not necessary.
 
 		# Getting x,y positions of the objects near by the center of the tile. 
 		wcs = Tan(fileaddress)
-		ok, x, y = wcs.radec2pixelxy(tmass_ra[inds==m][np.where(iBool==True)], tmass_dec[inds==m][np.where(iBool==True)])
-		# As long as r is less than 100, I can only consider objects within the tile.
+		ok, x, y = wcs.radec2pixelxy(tmass_ra[inds==m], tmass_dec[inds==m])
+		# This is an insurance	
 		a = np.isnan(x)
 		b = np.isnan(y)
+		x[a] = -5000 
+		y[b] = -5000 
 
-		x[a] = 0
-		y[b] = 0
-
-		# ibool = (0<x)&(x<500)&(0<y)&(y<500)#
-		ibool = (1<x)&(x<2048)&(1<y)&(y<2048)
+		ibool = ((-r-1)<x)&(x<(2048+r))&((-r-1)<y)&(y<(2048+r))  # This saves so much time! 
 		x -= 1
 		y -= 1
 
@@ -205,13 +203,12 @@ def unWISE_mask_map(tileName,channel, TMASS_RA, TMASS_DEC, TMASS_K, TMASS_X, TMA
 		for (a,b) in zip (y,x):
 			Y,X = np.ogrid[-a:n-a, -b:n-b] # I guess this doesn't really matter.
 			mask = X*X + Y*Y <= r*r
-			array[mask] = 0
+			array[mask] = False
 
 		print m,r, x.size #Printing the the bin number, mask radius, the size of x.
 
 	if plot:
-		# Holes filled with the median image. \
-
+		# Holes filled with the median image.
 		objs1 = fitsio.FITS(fileaddress)
 		blockImage =objs1[0][:,:] 		
 		plt.subplot(1,2, 1)
@@ -219,7 +216,7 @@ def unWISE_mask_map(tileName,channel, TMASS_RA, TMASS_DEC, TMASS_K, TMASS_X, TMA
 
 		plt.subplot(1,2,2)
 		filtered_image = np.copy(blockImage)
-		filtered_image[array==0] = np.median(filtered_image)
+		filtered_image[array==False] = np.median(filtered_image)
 		plt.imshow(filtered_image, cmap='gray', vmin=vmin, vmax=vmax, origin='lower',interpolation='nearest') # 10/8/2015: Becareful about the orientation of the matrix. 
 		plt.savefig(tileName+'_masked_compare.eps', bbox_inches='tight',interpolation='nearest')		
 		plt.show() 
@@ -230,11 +227,12 @@ def unWISE_mask_map(tileName,channel, TMASS_RA, TMASS_DEC, TMASS_K, TMASS_X, TMA
 		plt.show() 
 
 	if plotsave:
-		fits = fitsio.FITS(get_TMASS_mask_filename(tileName),'rw') #This can probably be fixed so that the program is more efficient. Say, save as integer type... I am not sure though.
-		fits.write_image(array >0.0)
+		fits = fitsio.FITS(get_TMASS_mask_filename(tileName), 'rw') #
+		data = np.zeros(array.shape, dtype=[('MASK','bool')])
+		data['MASK'] = array
+		fits.write(data)
 		fits.close()
 	return array
-
 
 
 # # This function is retired as of 11/15/2015. See nearby function above 
