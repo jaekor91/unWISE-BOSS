@@ -105,9 +105,9 @@ def unWISE_BOSS_cutouts(tilename, channelNumber, BOSSra, BOSSdec, pixSize,TMASS_
 		maskCube = maskCube[:,:,1:]
 
 	if saveCubes:
-		fits = fitsio.FITS(get_imageCube_filename(tileName,channel),'rw')
-		fits.write_image(imageCube)
-		fits.write_image(maskCube)
+		fits = fitsio.FITS(get_imageCube_filename(tileName,channel),'rw', clobber=True) # clobber=True is there to overwrrite the existing file.
+		fits.write(imageCube)
+		fits.write(maskCube)
 		fits.close() 
 
 	return blockImage, mask, imageCube, maskCube, cutoutX, cutoutY, diffX, diffY, pixSize
@@ -195,7 +195,7 @@ def unWISE_mask_map(tileName,channel, TMASS_RA, TMASS_DEC, TMASS_K, TMASS_X, TMA
 	inds = np.digitize(tmass_k, bins)	
 
 	n = 2048 # Size of an unWISE tile.
-	array = np.ones((n, n),dtype=bool)
+	array = np.ones((n, n),dtype=int)
 
 	rTolerance = np.array([1000, 800, 500, 350, 180, 110, 90, 70, 40,35,30,20,15,10,8,5,4,3.5,2,2,2])*1.25 # 11/15/2015: This change was made to make the mask sizes larger.
 	for m in range(3, 24):
@@ -221,7 +221,7 @@ def unWISE_mask_map(tileName,channel, TMASS_RA, TMASS_DEC, TMASS_K, TMASS_X, TMA
 		for (a,b) in zip (y,x):
 			Y,X = np.ogrid[-a:n-a, -b:n-b] # I guess this doesn't really matter.
 			mask = X*X + Y*Y <= r*r
-			array[mask] = False
+			array[mask] = 0
 
 		print m, '(',bins[m-1],',',bins[m],')', r, x.size #Printing the the bin number, mask radius, the size of x.
 
@@ -234,7 +234,7 @@ def unWISE_mask_map(tileName,channel, TMASS_RA, TMASS_DEC, TMASS_K, TMASS_X, TMA
 
 		plt.subplot(1,2,2)
 		filtered_image = np.copy(blockImage)
-		filtered_image[array==False] = np.median(filtered_image)
+		filtered_image[array==0] = np.median(filtered_image)
 		plt.imshow(filtered_image, cmap='gray', vmin=vmin, vmax=vmax, origin='lower',interpolation='nearest') # 10/8/2015: Becareful about the orientation of the matrix. 
 		plt.savefig(tileName+'_masked_compare.eps', bbox_inches='tight',interpolation='nearest')		
 		plt.show() 
@@ -246,9 +246,7 @@ def unWISE_mask_map(tileName,channel, TMASS_RA, TMASS_DEC, TMASS_K, TMASS_X, TMA
 
 	if plotsave:
 		fits = fitsio.FITS(get_TMASS_mask_filename(tileName), 'rw', clobber=True) #
-		data = np.zeros(array.shape, dtype=[('MASK','i2')])
-		data['MASK'] = array
-		fits.write(data)
+		fits.write(array)
 		fits.close()
 	return array
 
