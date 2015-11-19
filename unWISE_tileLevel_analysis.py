@@ -203,7 +203,8 @@ def unWISE_mask_map(tileName,channel, TMASS_RA, TMASS_DEC, TMASS_K, TMASS_X, TMA
 
 	# If the number of 2MASS objects is too large, then.
 	TMASS_num = 5000
-	if tmass_ra.size > TMAS_num:
+	print 'tmass_ra.size: ', tmass_ra.size
+	if tmass_ra.size > TMASS_num:
 		return 0
 
 	rTolerance = np.array([1000, 800, 500, 350, 180, 110, 90, 70, 40,35,30,20,15,10,8,5,4,3.5,2,2,2])*1.25 # 11/15/2015: This change was made to make the mask sizes larger.
