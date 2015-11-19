@@ -91,6 +91,8 @@ def unWISE_BOSS_cutouts(tilename, channelNumber, BOSSra, BOSSdec, pixSize,TMASS_
 	blockImage =objs1[0][:,:]
 
 	mask = unWISE_mask_map(tileName,channel, TMASS_RA, TMASS_DEC, TMASS_K, TMASS_X, TMASS_Y, TMASS_Z,plot=False, plotsave=maskSave) # The mask will be saved separately.
+	if type(mask) == int: # If the number of objects in 2MASS is too large then.
+		return
 
 	imageCube=np.zeros((2*tol+1, 2*tol+1),dtype=float)
 	maskCube = np.zeros((2*tol+1, 2*tol+1),dtype=float)
@@ -198,6 +200,11 @@ def unWISE_mask_map(tileName,channel, TMASS_RA, TMASS_DEC, TMASS_K, TMASS_X, TMA
 
 	n = 2048 # Size of an unWISE tile.
 	array = np.ones((n, n),dtype=int)
+
+	# If the number of 2MASS objects is too large, then.
+	TMASS_num = 5000
+	if tmass_ra.size > TMAS_num:
+		return 0
 
 	rTolerance = np.array([1000, 800, 500, 350, 180, 110, 90, 70, 40,35,30,20,15,10,8,5,4,3.5,2,2,2])*1.25 # 11/15/2015: This change was made to make the mask sizes larger.
 	for m in range(3, 24):
