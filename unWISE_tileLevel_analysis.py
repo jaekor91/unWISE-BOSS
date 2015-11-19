@@ -66,6 +66,8 @@ def unWISE_BOSS_cutouts(tilename, channelNumber, BOSSra, BOSSdec, pixSize,TMASS_
 
 	# x, y coordinates.
 	x, y = BOSS_unWISE_conversion.unWISE2BOSS(tileName, channel, RA, DEC, plot=False)
+	if x.size == 0:
+		return 
 
 	# Only selecting galaxies that are away from the boundary 
 	# by at least pixSize/2 amount. 
