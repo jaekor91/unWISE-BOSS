@@ -25,12 +25,12 @@ def view_tile_mask_compare(tName, channel, vminPercentile=0, vmaxPercentile=95):
 	filtered_image[array==0] = np.median(filtered_image)
 	plt.imshow(filtered_image, cmap='gray', vmin=vmin, vmax=vmax, origin='lower',interpolation='nearest') # 10/8/2015: Becareful about the orientation of the matrix. 
 
-	plt.savefig(tileName+'_'+channel+'_masked_compare.eps', bbox_inches='tight',interpolation='nearest')
+	plt.savefig(tName+'_'+channel+'_masked_compare.eps', bbox_inches='tight',interpolation='nearest')
 	plt.show() 
 
 	# Turning up the contrast
 	plt.imshow(filtered_image, cmap='gray', vmin=filtered_image.min(), vmax=np.percentile(filtered_image,99), origin='lower',interpolation='nearest') # 10/8/2015: Becareful about the orientation of the matrix. 
-	plt.savefig(tileName+'_'+channel+'_masked.eps', bbox_inches='tight',interpolation='nearest')
+	plt.savefig(tName+'_'+channel+'_masked.eps', bbox_inches='tight',interpolation='nearest')
 	plt.show()
 	objs1.close()
 	objs2.close()
