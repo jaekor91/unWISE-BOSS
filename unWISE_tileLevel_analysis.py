@@ -10,9 +10,11 @@ from astrometry.util.starutil_numpy import degrees_between
 
 # Input: Tile name (Must have an accompanying mask in the directory)
 # Output: Juxtapose the image with the masked image
-def view_tile_mask_compare(tName, channel, vmin=-50,vmax=300):
+def view_tile_mask_compare(tName, channel, vminPercentile=0, vmaxPercentile=95):
 	objs1 = fitsio.FITS(BOSS_unWISE_conversion.get_unwise_filename(tName, channel))
 	blockImage =objs1[0][:,:]
+	vmin = np.percentile(blockImage,vminPercentile)
+	vmax = np.percentile(blockImage,vmaxPercentile)
 	plt.subplot(1,2, 1)
 	plt.imshow(blockImage, cmap='gray', vmin=vmin, vmax=vmax, origin='lower',interpolation='nearest') # 10/8/2015: Becareful about the orientation of the matrix. 
 
@@ -22,11 +24,16 @@ def view_tile_mask_compare(tName, channel, vmin=-50,vmax=300):
 	filtered_image = np.copy(blockImage)
 	filtered_image[array==0] = np.median(filtered_image)
 	plt.imshow(filtered_image, cmap='gray', vmin=vmin, vmax=vmax, origin='lower',interpolation='nearest') # 10/8/2015: Becareful about the orientation of the matrix. 
+
+	plt.savefig(tileName+'_'+channel+'_masked_compare.eps', bbox_inches='tight',interpolation='nearest')
 	plt.show() 
 
 	# Turning up the contrast
 	plt.imshow(filtered_image, cmap='gray', vmin=filtered_image.min(), vmax=np.percentile(filtered_image,99), origin='lower',interpolation='nearest') # 10/8/2015: Becareful about the orientation of the matrix. 
+	plt.savefig(tileName+'_'+channel+'_masked.eps', bbox_inches='tight',interpolation='nearest')
 	plt.show()
+	objs1.close()
+	objs2.close()
 
 # INput:unWISE tile name
 # Output: the file address for the corresponding mask map based on 2mass
@@ -41,6 +48,7 @@ def view_tile(tName, channel):
 	blockImage =objs1[0][:,:]
 	plt.imshow(blockImage, cmap='gray', vmin=-50, vmax=300, origin='lower',interpolation='nearest') # 10/8/2015: Becareful about the orientation of the matrix. 
 	plt.show()
+	objs1.close()
 
 # Given RA/DEC returns x,y,z on the unit sphere.
 def radec2xyz(ra,dec):
@@ -114,6 +122,7 @@ def unWISE_BOSS_cutouts(tilename, channelNumber, BOSSra, BOSSdec, pixSize,TMASS_
 		fits.write(maskCube)
 		fits.close() 
 
+	objs1.close()
 	return blockImage, mask, imageCube, maskCube, cutoutX, cutoutY, diffX, diffY, pixSize
 
 
@@ -202,7 +211,7 @@ def unWISE_mask_map(tileName,channel, TMASS_RA, TMASS_DEC, TMASS_K, TMASS_X, TMA
 	array = np.ones((n, n),dtype=int)
 
 	# If the number of 2MASS objects is too large, then.
-	TMASS_num = 5000
+	TMASS_num = 50000 # Average number seems to be about 25000
 	print 'tmass_ra.size: ', tmass_ra.size
 	if tmass_ra.size > TMASS_num:
 		return 0
@@ -253,6 +262,7 @@ def unWISE_mask_map(tileName,channel, TMASS_RA, TMASS_DEC, TMASS_K, TMASS_X, TMA
 		plt.imshow(filtered_image, cmap='gray', vmin=filtered_image.min(), vmax=np.percentile(filtered_image,99), origin='lower',interpolation='nearest') # 10/8/2015: Becareful about the orientation of the matrix. 
 		plt.savefig(tileName+'_masked.eps', bbox_inches='tight',interpolation='nearest')		
 		plt.show() 
+		objs1.close()
 
 	if plotsave:
 		fits = fitsio.FITS(get_TMASS_mask_filename(tileName), 'rw', clobber=True) #
